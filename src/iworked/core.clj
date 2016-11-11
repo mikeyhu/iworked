@@ -9,6 +9,6 @@
   [& args]
   (let
     [data (s/load-from location)]
-    (s/save-to location (p/parse (first args)))
+    (s/save-to location (p/parse-word (first args)))
     ))
 

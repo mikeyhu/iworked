@@ -18,25 +18,25 @@
     (let
       [input "today"
        midnight (t/today-at-midnight)]
-      (is (= midnight (:date (parse input)))))))
+      (is (= midnight (:date (parse-word input)))))))
 
 (deftest parser-understands-yesterday
   (testing
     (let
       [yesterday-midnight (t/minus (t/today-at-midnight) (t/days 1))]
-      (is (= yesterday-midnight (:date (parse "yesterday")))))))
+      (is (= yesterday-midnight (:date (parse-word "yesterday")))))))
 
 (deftest parser-understands-Monday
   (testing
     (with-redefs [today (fn [] (t/date-time 2016 12 25))]
       (let
         [monday (t/date-time 2016 12 19)]
-        (is (= monday (:date (parse "Monday"))))))))
+        (is (= monday (:date (parse-word "Monday"))))))))
 
 (deftest parser-understands-lowercase-days
   (testing
-    (is (not (nil? (:date (parse "monday")))))))
+    (is (not (nil? (:date (parse-word "monday")))))))
 
 (deftest parser-returns-nil-if-unparseable
   (testing
-    (is (nil? (:date (parse "Midweekday"))))))
+    (is (nil? (:date (parse-word "Midweekday"))))))

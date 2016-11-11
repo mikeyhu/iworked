@@ -1,8 +1,9 @@
 (ns iworked.parser
-  (:require [clj-time.core :as t])
-  (:require [clj-time.periodic :as p])
-  (:require [clj-time.format :as f])
-  (:require [clojure.string :as str]))
+  (:require [clj-time.core :as t]
+            [clj-time.periodic :as p]
+            [clj-time.format :as f]
+            [clojure.string :as str])
+  )
 
 (def day-formatter (f/formatter "EEEE"))
 
@@ -30,6 +31,6 @@
     (parse-day command)
     ))
 
-(defn parse
+(defn parse-word
   [arg]
   (worked (parse-date arg) 1))
