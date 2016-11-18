@@ -40,3 +40,7 @@
 (deftest parser-returns-nil-if-unparseable
   (testing
     (is (nil? (:date (parse-word "Midweekday"))))))
+
+(deftest parser-understands-yyyyMMdd-format
+  (testing
+    (is (= (t/date-time 2016 10 15) (:date (parse-word "20161015"))))))

@@ -1,5 +1,6 @@
 (ns iworked.core-test
   (:require [clojure.test :refer :all]
             [iworked.core :refer :all]
-            [clj-time.core :as t]))
+            [clj-time.core :as t]
+            [iworked.event :as e]))
 
