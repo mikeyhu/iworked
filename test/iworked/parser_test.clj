@@ -44,3 +44,29 @@
 (deftest parser-understands-yyyyMMdd-format
   (testing
     (is (= (t/date-time 2016 10 15) (:date (parse-word "20161015"))))))
+
+(deftest parser-can-understands-half
+  (testing
+    (is (= 0.5 (:amount (parse-word "half"))))))
+
+(deftest parser-can-understands-all
+  (testing
+    (is (= 1 (:amount (parse-word "all"))))))
+
+(deftest parser-can-understands-quarter
+  (testing
+    (is (= 0.25 (:amount (parse-word "quarter"))))))
+
+(deftest parser-has-defaults
+  (testing
+    (with-redefs [today (fn [] (t/date-time 2016 12 25))]
+      (is (=
+            (parse-all [])
+            {:date (today) :amount 1})))))
+
+(deftest parser-accepts-multiple-arguments
+  (testing
+    (with-redefs [today (fn [] (t/date-time 2016 12 25))]
+      (is (=
+            (parse-all ["half" "20161015"])
+            {:date (t/date-time 2016 10 15) :amount 0.5})))))

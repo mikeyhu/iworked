@@ -1,8 +1,24 @@
 (ns iworked.store
   (:require [clojure.java.io :as io]
             [clj-time.format :as f]
-            [iworked.event :as e])
+            [iworked.date :as d])
   )
+
+(defn date-to-string
+  [date]
+  (f/unparse d/ymd-formatter date))
+
+(defn string-to-date
+  [str]
+  (f/parse d/ymd-formatter str))
+
+(defn to-saveable
+  [an-event]
+  (update an-event :date date-to-string))
+
+(defn from-saveable
+  [an-event]
+  (update an-event :date string-to-date))
 
 (defn save-to
   [location data]
@@ -22,19 +38,17 @@
         (read r)))
     {}))
 
-(def ymd-formatter (f/formatter "yyyyMMdd"))
-
 (defn load-events
   [loc]
-  (map e/from-saveable (load-from loc)))
+  (map from-saveable (load-from loc)))
 
 (defn save-events
   [loc data]
-  (save-to loc (map e/to-saveable data)))
+  (save-to loc (map to-saveable data)))
 
 (defn add-event-to
   [current-events new-event]
-  (assoc current-events (f/unparse ymd-formatter (:date new-event)) (:amount new-event)))
+  (assoc current-events (f/unparse d/ymd-formatter (:date new-event)) (:amount new-event)))
 
 
 

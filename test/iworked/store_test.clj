@@ -6,6 +6,18 @@
 
 (defn uuid [] (str (java.util.UUID/randomUUID)))
 
+(deftest event-can-have-dates-serialized
+  (testing
+    (let [event {:date (t/date-time 2016 11 01)}
+          expected "20161101"]
+      (is (= expected (:date (to-saveable event)))))))
+
+(deftest event-can-have-dates-deserialized
+  (testing
+    (let [event {:date "20161101"}
+          expected (t/date-time 2016 11 01)]
+      (is (= expected (:date (from-saveable event)))))))
+
 (deftest can-save-and-load-some-data
   (testing "saving and loading"
     (let [test-file (str "/tmp/" (uuid) ".cljdata")
@@ -28,26 +40,26 @@
 
 (deftest can-save-an-event
   (testing
-    (let [events [(e/event (t/date-time 2016 11 11) 1)]
+    (let [events [{:date (t/date-time 2016 11 11) :amount 1}]
           test-file (str "/tmp/" (uuid) ".cljdata")]
       (save-events test-file events)
       (is (= events (load-events test-file))))))
 
 (deftest can-add-an-event
   (testing
-    (let [event (e/event (t/date-time 2016 11 11) 1)
+    (let [event {:date (t/date-time 2016 11 11) :amount 1}
           events {"20161111" 1}]
       (is (= events (add-event-to {} event))))))
 
 (deftest can-add-an-event-to-another
   (testing
-    (let [event (e/event (t/date-time 2016 11 12) 2)
+    (let [event {:date (t/date-time 2016 11 12) :amount 0.5}
           events {"20161111" 1}
-          expected {"20161111" 1, "20161112" 2}]
+          expected {"20161111" 1, "20161112" 0.5}]
       (is (= expected (add-event-to events event))))))
 
 (deftest should-not-store-the-same-event-twise
   (testing
-    (let [event (e/event (t/date-time 2016 11 11) 1)
+    (let [event {:date (t/date-time 2016 11 11) :amount 1}
           events {"20161111" 1}]
       (is (= events (add-event-to events event))))))
