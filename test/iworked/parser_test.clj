@@ -1,17 +1,9 @@
 (ns iworked.parser-test
   (:require [clojure.test :refer :all]
             [iworked.parser :refer :all]
-            [clj-time.core :as t]))
+            [clj-time.core :as t]
+            [iworked.date :as d]))
 
-(deftest worked-contains-date-and-amount
-  (testing
-    (let
-      [date (t/now)
-       amount 1
-       worked (worked date amount)]
-      (is (= date (:date worked)))
-      (is (= amount (:amount worked)))
-      )))
 
 (deftest parser-understands-today
   (testing
@@ -59,14 +51,14 @@
 
 (deftest parser-has-defaults
   (testing
-    (with-redefs [today (fn [] (t/date-time 2016 12 25))]
+    (with-redefs [d/today (fn [] (t/date-time 2016 12 25))]
       (is (=
             (parse-all [])
-            {:date (today) :amount 1})))))
+            {:date (d/today) :amount 1})))))
 
 (deftest parser-accepts-multiple-arguments
   (testing
-    (with-redefs [today (fn [] (t/date-time 2016 12 25))]
+    (with-redefs [d/today (fn [] (t/date-time 2016 12 25))]
       (is (=
             (parse-all ["half" "20161015"])
             {:date (t/date-time 2016 10 15) :amount 0.5})))))

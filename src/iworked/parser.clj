@@ -4,25 +4,20 @@
             [clj-time.format :as f]
             [iworked.util :as u]
             [iworked.date :as d]
-            [clojure.string :as str])
-  )
-
-(defn today [] (d/start-of-day (t/now)))
-
-(defn last-week [] (take 7 (p/periodic-seq (today) (t/days -1))))
+            [clojure.string :as str]))
 
 (defn parse-today-yesterday
   [word]
   (case
     word
-    "today" (today)
-    "yesterday" (t/minus (today) (t/days 1))
+    "today" (d/today)
+    "yesterday" (t/minus (d/today) (t/days 1))
     nil))
 
 (defn parse-day
   [word]
   (first
-    (filter #(= (str/lower-case (f/unparse d/day-formatter %)) (str/lower-case word)) (last-week))))
+    (filter #(= (str/lower-case (f/unparse d/day-formatter %)) (str/lower-case word)) (d/last-week))))
 
 (defn parse-ymd
   [word]
@@ -58,4 +53,4 @@
   [args]
   (reduce
     merge
-    {:date (today) :amount 1} (map parse-word args)))
+    {:date (d/today) :amount 1} (map parse-word args)))
