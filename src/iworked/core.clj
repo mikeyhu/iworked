@@ -12,7 +12,7 @@
   (let
     [data (s/load-from location)]
     (if (= (first args) "show")
-      (r/display-days-in-month (r/days-in-month (t/now)))
+      (r/display-report (r/create-report (r/days-in-month (t/now)) data))
       (s/save-to location
                  (s/add-event-to data (p/parse-all args))))))
 

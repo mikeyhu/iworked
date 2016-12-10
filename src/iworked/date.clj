@@ -5,6 +5,7 @@
 
 (def day-formatter (f/formatter "EEEE"))
 (def ymd-formatter (f/formatter "yyyyMMdd"))
+(def report-formatter (f/formatter "EEE dd MMM yyyy"))
 
 (defn start-of-day
   [date]

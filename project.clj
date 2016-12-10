@@ -6,6 +6,7 @@
   :dependencies [
                  [org.clojure/clojure "1.8.0"]
                  [clj-time "0.12.2"]
+                 [clansi "1.0.0"]
                  ]
   :main ^:skip-aot iworked.core
   :target-path "target/%s"

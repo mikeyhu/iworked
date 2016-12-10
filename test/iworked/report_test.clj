@@ -21,3 +21,17 @@
             days (days-in-month date)]
         (is (= (t/date-time 2016 12 25) (last days)))
         ))))
+
+(deftest returns-report
+  (testing
+    (with-redefs [d/today (fn [] (t/date-time 2016 11 05))]
+      (let [data {"20161101" 1, "20161102" 1, "20161103" 0.5}
+            days (days-in-month (t/date-time 2016 11))]
+        (is (= [
+                {:date (t/date-time 2016 11 01) :amount 1}
+                {:date (t/date-time 2016 11 02) :amount 1}
+                {:date (t/date-time 2016 11 03) :amount 0.5}
+                {:date (t/date-time 2016 11 04) :amount nil}
+                {:date (t/date-time 2016 11 05) :amount nil}]
+               (create-report days data)))
+        ))))
