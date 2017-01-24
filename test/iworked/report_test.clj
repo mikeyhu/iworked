@@ -35,3 +35,38 @@
                 {:date (t/date-time 2016 11 05) :amount nil}]
                (create-report days data)))
         ))))
+
+(deftest selects-appropriate-colour
+  (testing
+    (let [weekday (t/date-time 2016 12 01)
+          weekend (t/date-time 2016 12 03)]
+      (is (= :green (choose-color {:date weekday :amount 1})))
+      (is (= :cyan (choose-color {:date weekday :amount 0.5})))
+      (is (= :blue (choose-color {:date weekday :amount 0.25})))
+      (is (= :red (choose-color {:date weekday :amount 0})))
+      (is (= :green (choose-color {:date weekend :amount 1})))
+      (is (= :cyan (choose-color {:date weekend :amount 0.5})))
+      (is (= :blue (choose-color {:date weekend :amount 0.25})))
+      (is (= :white (choose-color {:date weekend :amount 0})))
+      )))
+
+(deftest select-current-month-if-no-arguments
+  (testing
+    (with-redefs [d/today (fn [] (t/date-time 2016 11 05))]
+      (let [data {"20161101" 1, "20161102" 1, "20161103" 0.5}]
+        (is (= [
+                {:date (t/date-time 2016 11 01) :amount 1}
+                {:date (t/date-time 2016 11 02) :amount 1}
+                {:date (t/date-time 2016 11 03) :amount 0.5}
+                {:date (t/date-time 2016 11 04) :amount nil}
+                {:date (t/date-time 2016 11 05) :amount nil}]
+               (choose-report [] data)))
+        ))))
+
+(deftest select-appropriate-month-if-provided
+  (testing
+    (with-redefs [d/today (fn [] (t/date-time 2016 12 05))]
+      (let [data {"20161101" 1, "20161102" 1, "20161103" 0.5}]
+        (is (=  {:date (t/date-midnight 2016 11 01) :amount 1}
+                (first (choose-report ["november"] data))))
+        ))))

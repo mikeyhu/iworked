@@ -1,6 +1,5 @@
 (ns iworked.parser
   (:require [clj-time.core :as t]
-            [clj-time.periodic :as p]
             [clj-time.format :as f]
             [iworked.util :as u]
             [iworked.date :as d]
@@ -18,6 +17,12 @@
   [word]
   (first
     (filter #(= (str/lower-case (f/unparse d/day-formatter %)) (str/lower-case word)) (d/last-week))))
+
+(defn parse-month
+  [word]
+  (if word
+    (first
+      (filter #(= (str/lower-case (f/unparse d/month-formatter %)) (str/lower-case word)) (d/months)))))
 
 (defn parse-ymd
   [word]
