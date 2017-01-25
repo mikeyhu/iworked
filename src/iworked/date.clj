@@ -14,18 +14,8 @@
 
 (defn today [] (start-of-day (t/now)))
 
+(defn yesterday [] (t/minus (today) (t/days 1)))
+
 (defn last-week [] (take 7 (p/periodic-seq (today) (t/days -1))))
 
 (defn months [] (take 12 (p/periodic-seq (today) (t/months -1))))
-
-
-(apply slide word)
-(def word "that")
-(defn slide
-  [a b & rest]
-  (let [ab (str a b)]
-    (if rest
-      (cons ab (apply slide (apply str b rest)))
-      [ab]
-      ))
-  )

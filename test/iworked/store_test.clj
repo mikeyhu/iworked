@@ -1,7 +1,6 @@
 (ns iworked.store-test
   (:require [clojure.test :refer :all]
             [iworked.store :refer :all]
-            [iworked.event :as e]
             [clj-time.core :as t]))
 
 (defn uuid [] (str (java.util.UUID/randomUUID)))

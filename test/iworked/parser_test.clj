@@ -20,7 +20,7 @@
 
 (deftest parser-understands-Monday
   (testing
-    (with-redefs [today (fn [] (t/date-time 2016 12 25))]
+    (with-redefs [d/today (fn [] (t/date-time 2016 12 25))]
       (let
         [monday (t/date-time 2016 12 19)]
         (is (= monday (:date (parse-word "Monday"))))))))

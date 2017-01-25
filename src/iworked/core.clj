@@ -1,8 +1,7 @@
 (ns iworked.core
   (:require [iworked.parser :as p]
             [iworked.store :as s]
-            [iworked.report :as r]
-            [clj-time.core :as t])
+            [iworked.report :as r])
   (:gen-class))
 
 (def location (str (System/getProperty "user.dir") "/.iworked.cljdata"))
