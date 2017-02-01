@@ -25,7 +25,7 @@
     0.25 "quarter of the day"
     nil "did not work"))
 
-(defn choose-color
+(defn display-colour
   [row]
   (case
     (:amount row)
@@ -36,21 +36,23 @@
       :red
       :white)))
 
-(defn render-row
+(defn display-date
+  [date]
+  (f/unparse d/report-formatter date))
+
+(defn display-row
   [row]
   (c/style
-    (s/join " " [(f/unparse d/report-formatter (:date row))
-                 (display-amount (:amount row))])
-    (choose-color row))
-  )
+    (s/join " " [(display-date (:date row)) (display-amount (:amount row))])
+    (display-colour row)))
 
 (defn display-report
   [report]
   (doseq [r report]
     (println
-      (render-row r))))
+      (display-row r))))
 
-(defn create-report
+(defn generate-report
   [days data]
   (letfn
     [(lookup [d] (get data (f/unparse d/ymd-formatter d)))]
@@ -63,5 +65,5 @@
         (or
           (parser/parse-month (first args))
           (d/today))]
-    (create-report (days-in-month date) data))
+    (generate-report (days-in-month date) data))
   )

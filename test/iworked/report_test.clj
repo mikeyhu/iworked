@@ -33,21 +33,21 @@
                 {:date (t/date-time 2016 11 03) :amount 0.5}
                 {:date (t/date-time 2016 11 04) :amount nil}
                 {:date (t/date-time 2016 11 05) :amount nil}]
-               (create-report days data)))
+               (generate-report days data)))
         ))))
 
 (deftest selects-appropriate-colour
   (testing
     (let [weekday (t/date-time 2016 12 01)
           weekend (t/date-time 2016 12 03)]
-      (is (= :green (choose-color {:date weekday :amount 1})))
-      (is (= :cyan (choose-color {:date weekday :amount 0.5})))
-      (is (= :blue (choose-color {:date weekday :amount 0.25})))
-      (is (= :red (choose-color {:date weekday :amount 0})))
-      (is (= :green (choose-color {:date weekend :amount 1})))
-      (is (= :cyan (choose-color {:date weekend :amount 0.5})))
-      (is (= :blue (choose-color {:date weekend :amount 0.25})))
-      (is (= :white (choose-color {:date weekend :amount 0})))
+      (is (= :green (display-colour {:date weekday :amount 1})))
+      (is (= :cyan (display-colour {:date weekday :amount 0.5})))
+      (is (= :blue (display-colour {:date weekday :amount 0.25})))
+      (is (= :red (display-colour {:date weekday :amount 0})))
+      (is (= :green (display-colour {:date weekend :amount 1})))
+      (is (= :cyan (display-colour {:date weekend :amount 0.5})))
+      (is (= :blue (display-colour {:date weekend :amount 0.25})))
+      (is (= :white (display-colour {:date weekend :amount 0})))
       )))
 
 (deftest select-current-month-if-no-arguments
